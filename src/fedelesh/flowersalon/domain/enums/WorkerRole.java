@@ -1,11 +1,11 @@
 package fedelesh.flowersalon.domain.enums;
 
-public enum UserRole {
-    CLIENT("Клієнт"), OWNER("Власник"), WORKER("Продавець");
+public enum WorkerRole {
+    OWNER("Власник"), WORKER("Продавець");
 
     private final Object name;
 
-    UserRole(String name) {
+    WorkerRole(String name) {
         this.name = name;
     }
 

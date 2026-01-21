@@ -14,7 +14,6 @@ public class Order extends BaseEntity {
     public static final String FIELD_STATUS = "status";
 
     private UUID workerId;
-    private UUID clientId;
     private LocalDateTime date;
     private double totalPrice;
     private OrderStatus status;
@@ -23,15 +22,13 @@ public class Order extends BaseEntity {
         super();
     }
 
-    public Order(UUID id, LocalDateTime date, double totalPrice,
-          UUID workerId, UUID clientId, OrderStatus status) {
+    public Order(LocalDateTime date, double totalPrice,
+          UUID floristId, OrderStatus status) {
         this();
         setDate(date);
         setTotalPrice(totalPrice);
         setStatus(status);
-
         this.workerId = workerId;
-        this.clientId = clientId;
 
         if (!isValid()) {
             throw new EntityValidationException(getErrors());

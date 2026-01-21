@@ -15,6 +15,12 @@ public class OrderItem extends BaseEntity {
     private int quantity;
     private double priceAtOrderTime;
 
+    private OrderItem() {
+        super();
+        this.orderId = null;
+        this.productId = null;
+    }
+
     public OrderItem(UUID orderId, UUID productId,
           int quantity, double priceAtOrderTime) {
 

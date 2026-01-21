@@ -1,12 +1,11 @@
 package fedelesh.flowersalon.domain.impl;
 
 import fedelesh.flowersalon.domain.BaseEntity;
-import fedelesh.flowersalon.domain.enums.UserRole;
+import fedelesh.flowersalon.domain.enums.WorkerRole;
 import fedelesh.flowersalon.domain.exception.EntityValidationException;
 import fedelesh.flowersalon.domain.util.ValidationError;
-import java.util.UUID;
 
-public class User extends BaseEntity implements Comparable<User> {
+public class Florist extends BaseEntity implements Comparable<Florist> {
 
     public static final String FIELD_FIRST_NAME = "firstName";
     public static final String FIELD_LAST_NAME = "lastName";
@@ -17,19 +16,19 @@ public class User extends BaseEntity implements Comparable<User> {
     private String phoneNumber;
     private String firstName;
     private String lastName;
-    private String hashPassword;
-    private UserRole role;
+    private String passwordHash;
+    private WorkerRole role;
 
-    private User() {
+    private Florist() {
         super();
     }
 
-    public User(UUID id, String firstName, String lastName, String hashPassword,
-          String phoneNumber, UserRole role) {
+    public Florist(String firstName, String lastName, String passwordHash,
+          String phoneNumber, WorkerRole role) {
         this();
         setFirstName(firstName);
         setLastName(lastName);
-        setHashPassword(hashPassword);
+        setPasswordHash(passwordHash);
         setPhoneNumber(phoneNumber);
         setRole(role);
 
@@ -66,18 +65,18 @@ public class User extends BaseEntity implements Comparable<User> {
         this.lastName = lastName;
     }
 
-    public String getHashPassword() {
-        return hashPassword;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setHashPassword(String hashPassword) {
+    public void setPasswordHash(String passwordHash) {
         clearError(FIELD_PASSWORD);
-        if (hashPassword == null || hashPassword.trim().isEmpty()) {
+        if (passwordHash == null || passwordHash.trim().isEmpty()) {
             addError(FIELD_PASSWORD, ValidationError.PASSWORD_EMPTY.message());
-        } else if (hashPassword.length() < 6) {
+        } else if (passwordHash.length() < 6) {
             addError(FIELD_PASSWORD, ValidationError.PASSWORD_TOO_SHORT.message());
         }
-        this.hashPassword = hashPassword;
+        this.passwordHash = passwordHash;
     }
 
     public String getPhoneNumber() {
@@ -94,11 +93,11 @@ public class User extends BaseEntity implements Comparable<User> {
         this.phoneNumber = phoneNumber;
     }
 
-    public UserRole getRole() {
+    public WorkerRole getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(WorkerRole role) {
         clearError(FIELD_ROLE);
 
         if (role == null) {
@@ -109,7 +108,7 @@ public class User extends BaseEntity implements Comparable<User> {
     }
 
     @Override
-    public int compareTo(User o) {
+    public int compareTo(Florist o) {
         if (this.lastName == null) {
             return -1;
         }
