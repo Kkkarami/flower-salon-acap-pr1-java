@@ -71,6 +71,10 @@ public class Order extends BaseEntity {
         this.status = status;
     }
 
+    public UUID getWorkerId() {
+        return workerId;
+    }
+
     @Override
     public String toString() {
         return String.format("%s %.2f %s", date, totalPrice, status);

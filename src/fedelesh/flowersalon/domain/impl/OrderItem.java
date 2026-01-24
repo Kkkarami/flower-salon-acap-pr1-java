@@ -59,6 +59,14 @@ public class OrderItem extends BaseEntity {
         this.priceAtOrderTime = price;
     }
 
+    public UUID getOrderId() {
+        return orderId;
+    }
+
+    public UUID getProductId() {
+        return productId;
+    }
+
     @Override
     public String toString() {
         return String.format("%s %s %d %.2f", orderId, productId, quantity, priceAtOrderTime);
