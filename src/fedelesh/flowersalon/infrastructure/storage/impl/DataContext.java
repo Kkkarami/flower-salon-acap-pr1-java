@@ -4,6 +4,7 @@ import fedelesh.flowersalon.domain.Entity;
 import fedelesh.flowersalon.infrastructure.storage.Repository;
 import fedelesh.flowersalon.infrastructure.storage.contract.AccessoryRepository;
 import fedelesh.flowersalon.infrastructure.storage.contract.BouquetFlowerRepository;
+import fedelesh.flowersalon.infrastructure.storage.contract.BouquetRepository;
 import fedelesh.flowersalon.infrastructure.storage.contract.FloristRepository;
 import fedelesh.flowersalon.infrastructure.storage.contract.FlowerRepository;
 import fedelesh.flowersalon.infrastructure.storage.contract.OrderItemRepository;
@@ -25,9 +26,11 @@ public class DataContext {
     private final OrderItemRepository orderItemRepository;
     private final OrderRepository orderRepository;
     private final SupplierRepository supplierRepository;
+    private final BouquetRepository bouquetRepository;
     private final Set<Entity> newEntities = new LinkedHashSet<>();
     private final Set<Entity> dirtyEntities = new LinkedHashSet<>();
     private final Map<Repository<? extends Entity>, Set<UUID>> deletedIdsMap = new HashMap<>();
+
     private DataContext() {
         this.accessoryRepository = new JsonAccessoryRepository();
         this.bouquetFlowerRepository = new JsonBouquetFlowerRepository();
@@ -36,6 +39,7 @@ public class DataContext {
         this.orderItemRepository = new JsonOrderItemRepository();
         this.orderRepository = new JsonOrderRepository();
         this.supplierRepository = new JsonSupplierRepository();
+        this.bouquetRepository = new JsonBouquetRepository();
     }
 
     public static DataContext getInstance() {
@@ -70,6 +74,10 @@ public class DataContext {
         return supplierRepository;
     }
 
+    public BouquetRepository bouquets() {
+        return bouquetRepository;
+    }
+
     public <T extends Entity> void registerNew(T entity) {
         removeFromDeleted(entity);
         dirtyEntities.remove(entity);
@@ -98,7 +106,11 @@ public class DataContext {
     public void commit() {
         for (Entity entity : newEntities) {
             Repository<Entity> repo = getRepositoryForEntity(entity);
-            if (repo != null) {
+            if (repo == null) {
+                System.out.println(
+                      "ПОМИЛКА: Не знайдено репозиторій для класу: " + entity.getClass()
+                            .getSimpleName());
+            } else {
                 repo.save(entity);
             }
         }
@@ -148,6 +160,7 @@ public class DataContext {
             case "Accessory" -> (Repository<T>) accessoryRepository;
             case "BouquetFlower" -> (Repository<T>) bouquetFlowerRepository;
             case "Florist" -> (Repository<T>) floristRepository;
+            case "Bouquet" -> (Repository<T>) bouquetRepository;
             case "Flower" -> (Repository<T>) flowerRepository;
             case "OrderItem" -> (Repository<T>) orderItemRepository;
             case "Order" -> (Repository<T>) orderRepository;

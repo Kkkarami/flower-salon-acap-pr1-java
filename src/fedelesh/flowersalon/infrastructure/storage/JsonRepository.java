@@ -86,9 +86,11 @@ public abstract class JsonRepository<T extends Entity> implements Repository<T> 
 
     @Override
     public List<T> findAll(Specification<T> spec) {
-        return findAllInternal().stream()
-              .filter(spec::isSatisfiedBy)
-              .toList();
+        List<T> all = findAllInternal(); // Метод, який читає з JSON
+        if (spec == null) {
+            return all; // Якщо специфікації немає, повертаємо все
+        }
+        return all.stream().filter(spec::isSatisfiedBy).toList();
     }
 
     @Override

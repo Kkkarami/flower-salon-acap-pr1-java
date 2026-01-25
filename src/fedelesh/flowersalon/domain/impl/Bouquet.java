@@ -51,11 +51,9 @@ public class Bouquet extends BaseEntity {
 
     public void setPrice(double price) {
         clearError(FIELD_PRICE);
-
-        if (price <= 0) {
+        if (price < 0) {
             addError(FIELD_PRICE, ValidationError.BOUQUET_PRICE_INVALID.message());
         }
-
         this.price = price;
     }
 

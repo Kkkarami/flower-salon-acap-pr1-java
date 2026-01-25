@@ -5,6 +5,8 @@ import fedelesh.flowersalon.domain.enums.OrderStatus;
 import fedelesh.flowersalon.domain.exception.EntityValidationException;
 import fedelesh.flowersalon.domain.util.ValidationError;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Order extends BaseEntity {
@@ -17,22 +19,27 @@ public class Order extends BaseEntity {
     private LocalDateTime date;
     private double totalPrice;
     private OrderStatus status;
+    private List<OrderItem> items;
 
     private Order() {
         super();
     }
 
     public Order(LocalDateTime date, double totalPrice,
-          UUID floristId, OrderStatus status) {
+          UUID workerId, OrderStatus status) {
         this();
         setDate(date);
         setTotalPrice(totalPrice);
         setStatus(status);
         this.workerId = workerId;
-
+        this.items = new ArrayList<>();
         if (!isValid()) {
             throw new EntityValidationException(getErrors());
         }
+    }
+
+    public List<OrderItem> getItems() {
+        return items;
     }
 
     public LocalDateTime getDate() {
