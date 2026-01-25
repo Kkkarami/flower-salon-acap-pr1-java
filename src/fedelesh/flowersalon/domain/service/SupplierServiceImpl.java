@@ -1,6 +1,7 @@
 package fedelesh.flowersalon.domain.service;
 
 import fedelesh.flowersalon.domain.contract.SupplierService;
+import fedelesh.flowersalon.domain.dto.SupplierCreateDto;
 import fedelesh.flowersalon.domain.impl.Supplier;
 import fedelesh.flowersalon.infrastructure.storage.impl.DataContext;
 import java.util.Set;
@@ -14,6 +15,19 @@ public final class SupplierServiceImpl implements SupplierService {
 
     public SupplierServiceImpl(DataContext context) {
         this.context = context;
+    }
+
+    @Override
+    public Supplier add(SupplierCreateDto dto) {
+        Supplier supplier = new Supplier(
+              dto.companyName(),
+              dto.contactPerson(),
+              dto.phoneNumber()
+        );
+
+        context.registerNew(supplier);
+        context.commit();
+        return supplier;
     }
 
     @Override
@@ -33,6 +47,8 @@ public final class SupplierServiceImpl implements SupplierService {
               .collect(Collectors.toSet());
     }
 
+    // Цей метод можна залишити для внутрішніх потреб або видалити,
+    // якщо слідувати суворому правилу "тільки DTO ззовні"
     @Override
     public Supplier add(Supplier entity) {
         context.registerNew(entity);
