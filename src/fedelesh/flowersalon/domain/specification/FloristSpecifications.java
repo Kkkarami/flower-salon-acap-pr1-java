@@ -43,9 +43,9 @@ public final class FloristSpecifications {
     /**
      * За номером телефону.
      */
-    public static Specification<Florist> byPhoneNumber(String phone) {
-        return florist -> florist.getPhoneNumber() != null
-              && florist.getPhoneNumber().equals(phone);
+    public static Specification<Florist> byEmail(String email) {
+        return florist -> florist.getEmail() != null
+              && florist.getEmail().equals(email);
     }
 
     /**

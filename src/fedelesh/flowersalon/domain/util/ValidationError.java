@@ -13,6 +13,8 @@ public enum ValidationError {
     PHONE_EMPTY("Номер телефону не може бути порожнім"),
     PHONE_INVALID("Невірний формат номера телефону"),
 
+    EMAIL_INVALID("Некоректний формат електронної пошти."),
+
     ROLE_EMPTY("Роль користувача не може бути порожньою"),
 
     PRODUCT_QUANTITY_MINUS("Кількість не може бути від’ємною"),

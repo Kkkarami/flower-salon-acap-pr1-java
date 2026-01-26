@@ -3,7 +3,7 @@ package fedelesh.flowersalon.domain.service;
 import fedelesh.flowersalon.domain.contract.AuthService;
 import fedelesh.flowersalon.domain.impl.Florist;
 import fedelesh.flowersalon.infrastructure.storage.impl.DataContext;
-import java.util.Optional;
+import org.mindrot.bcrypt.BCrypt;
 
 public final class AuthServiceImpl implements AuthService {
 
@@ -15,17 +15,18 @@ public final class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public boolean authenticate(String phoneNumber, String password) {
-        Optional<Florist> florist = context.florists().findAll(null).stream()
-              .filter(f -> f.getPhoneNumber().equals(phoneNumber) && f.getPasswordHash()
-                    .equals(password))
-              .findFirst();
-
-        if (florist.isPresent()) {
-            this.currentUser = florist.get();
-            return true;
-        }
-        return false;
+    public boolean authenticate(String email, String password) {
+        return context.florists().findAll(null).stream()
+              .filter(f -> f.getEmail().equalsIgnoreCase(email))
+              .findFirst()
+              .map(f -> {
+                  if (BCrypt.checkpw(password, f.getPasswordHash())) {
+                      this.currentUser = f;
+                      return true;
+                  }
+                  return false;
+              })
+              .orElse(false);
     }
 
     @Override
@@ -35,9 +36,6 @@ public final class AuthServiceImpl implements AuthService {
 
     @Override
     public Florist getUser() {
-        if (!isAuthenticated()) {
-            throw new SecurityException("Користувач не авторизований");
-        }
         return currentUser;
     }
 

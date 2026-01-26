@@ -4,21 +4,21 @@ import fedelesh.flowersalon.domain.BaseEntity;
 
 public final class LoginDto extends BaseEntity {
 
-    private final String phoneNumber;
+    private final String email;
     private final String password;
 
-    public LoginDto(String phoneNumber, String password) {
+    public LoginDto(String email, String password) {
         super();
-        this.phoneNumber = validatedPhone(phoneNumber);
+        this.email = validatedPhone(email);
         this.password = validatedPassword(password);
         ensureNoErrors();
     }
 
-    private String validatedPhone(String phone) {
-        if (phone == null || phone.isBlank()) {
+    private String validatedPhone(String email) {
+        if (email == null || email.isBlank()) {
             addError("phoneNumber", "Телефон обов'язковий");
         }
-        return phone;
+        return email;
     }
 
     private String validatedPassword(String pass) {
@@ -34,8 +34,8 @@ public final class LoginDto extends BaseEntity {
         }
     }
 
-    public String phoneNumber() {
-        return phoneNumber;
+    public String email() {
+        return email;
     }
 
     public String password() {

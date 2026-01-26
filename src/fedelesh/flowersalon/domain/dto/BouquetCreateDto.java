@@ -7,8 +7,8 @@ import java.util.UUID;
 public final class BouquetCreateDto extends BaseEntity {
 
     private final String name;
-    private final Map<UUID, Integer> flowerIdsWithQuantities; // ID квітки -> кількість
-    private final UUID wrapperId; // ID аксесуара (упаковки)
+    private final Map<UUID, Integer> flowerIdsWithQuantities;
+    private final UUID wrapperId;
 
     public BouquetCreateDto(String name, Map<UUID, Integer> flowerIdsWithQuantities,
           UUID wrapperId) {

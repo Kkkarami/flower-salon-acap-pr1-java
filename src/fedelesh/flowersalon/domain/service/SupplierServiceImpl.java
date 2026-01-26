@@ -47,8 +47,6 @@ public final class SupplierServiceImpl implements SupplierService {
               .collect(Collectors.toSet());
     }
 
-    // Цей метод можна залишити для внутрішніх потреб або видалити,
-    // якщо слідувати суворому правилу "тільки DTO ззовні"
     @Override
     public Supplier add(Supplier entity) {
         context.registerNew(entity);

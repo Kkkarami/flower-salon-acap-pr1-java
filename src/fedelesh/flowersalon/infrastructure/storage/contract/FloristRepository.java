@@ -9,5 +9,5 @@ public interface FloristRepository extends Repository<Florist> {
     /**
      * Знайти флориста за номером телефону (для логіну).
      */
-    Optional<Florist> findByPhoneNumber(String phoneNumber);
+    Optional<Florist> findByEmail(String email);
 }

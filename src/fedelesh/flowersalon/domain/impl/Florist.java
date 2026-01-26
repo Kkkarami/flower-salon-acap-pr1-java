@@ -10,10 +10,10 @@ public class Florist extends BaseEntity implements Comparable<Florist> {
     public static final String FIELD_FIRST_NAME = "firstName";
     public static final String FIELD_LAST_NAME = "lastName";
     public static final String FIELD_PASSWORD = "hashPassword";
-    public static final String FIELD_PHONE = "phoneNumber";
+    public static final String FIELD_EMAIL = "email";
     public static final String FIELD_ROLE = "role";
 
-    private String phoneNumber;
+    private String email;
     private String firstName;
     private String lastName;
     private String passwordHash;
@@ -24,12 +24,12 @@ public class Florist extends BaseEntity implements Comparable<Florist> {
     }
 
     public Florist(String firstName, String lastName, String passwordHash,
-          String phoneNumber, WorkerRole role) {
+          String email, WorkerRole role) {
         this();
         setFirstName(firstName);
         setLastName(lastName);
         setPasswordHash(passwordHash);
-        setPhoneNumber(phoneNumber);
+        setEmail(email);
         setRole(role);
 
         if (!isValid()) {
@@ -79,18 +79,17 @@ public class Florist extends BaseEntity implements Comparable<Florist> {
         this.passwordHash = passwordHash;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        clearError(FIELD_PHONE);
-        if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
-            addError(FIELD_PHONE, ValidationError.PHONE_EMPTY.message());
-        } else if (!phoneNumber.matches("\\+?[0-9]{7,15}")) {
-            addError(FIELD_PHONE, ValidationError.PHONE_INVALID.message());
+    public void setEmail(String email) {
+        clearError(FIELD_EMAIL);
+        // Регулярний вираз для перевірки формату email
+        if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            addError(FIELD_EMAIL, ValidationError.EMAIL_INVALID.message());
         }
-        this.phoneNumber = phoneNumber;
+        this.email = email;
     }
 
     public WorkerRole getRole() {
@@ -117,6 +116,6 @@ public class Florist extends BaseEntity implements Comparable<Florist> {
 
     @Override
     public String toString() {
-        return String.format("%s %s %s", firstName, lastName, phoneNumber);
+        return String.format("%s %s %s", firstName, lastName, email);
     }
 }

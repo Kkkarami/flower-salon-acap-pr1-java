@@ -30,10 +30,8 @@ public abstract class JsonRepository<T extends Entity> implements Repository<T> 
     protected final Gson gson;
     protected final Type listType;
 
-    // Identity Map для кешування
     protected final IdentityMap<T> identityMap = new IdentityMap<>();
 
-    // Прапорець "брудного" кешу
     private boolean cacheValid = false;
     private List<T> cachedList = null;
 
@@ -53,13 +51,10 @@ public abstract class JsonRepository<T extends Entity> implements Repository<T> 
     public T save(T entity) {
         UUID id = entity.getId();
 
-        // Оновлюємо Identity Map
         identityMap.put(id, entity);
 
-        // Інвалідуємо кеш списку
         invalidateCache();
 
-        // Зберігаємо у файл
         List<T> entities = loadFromFile();
 
         boolean exists = entities.stream()
@@ -77,7 +72,6 @@ public abstract class JsonRepository<T extends Entity> implements Repository<T> 
 
     @Override
     public Optional<T> findById(UUID id) {
-        // Спочатку перевіряємо Identity Map
         return identityMap.get(id)
               .or(() -> findAllInternal().stream()
                     .filter(entity -> entity.getId().equals(id))
@@ -86,9 +80,9 @@ public abstract class JsonRepository<T extends Entity> implements Repository<T> 
 
     @Override
     public List<T> findAll(Specification<T> spec) {
-        List<T> all = findAllInternal(); // Метод, який читає з JSON
+        List<T> all = findAllInternal();
         if (spec == null) {
-            return all; // Якщо специфікації немає, повертаємо все
+            return all;
         }
         return all.stream().filter(spec::isSatisfiedBy).toList();
     }
@@ -116,7 +110,6 @@ public abstract class JsonRepository<T extends Entity> implements Repository<T> 
 
     @Override
     public boolean deleteById(UUID id) {
-        // Видаляємо з Identity Map
         identityMap.remove(id);
         invalidateCache();
 

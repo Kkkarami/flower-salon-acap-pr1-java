@@ -19,9 +19,9 @@ class JsonFloristRepository extends JsonRepository<Florist> implements FloristRe
     }
 
     @Override
-    public Optional<Florist> findByPhoneNumber(String phoneNumber) {
+    public Optional<Florist> findByEmail(String email) {
         return findAllInternal().stream()
-              .filter(f -> f.getPhoneNumber().equals(phoneNumber))
+              .filter(f -> f.getEmail().equals(email))
               .findFirst();
     }
 }

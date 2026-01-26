@@ -18,7 +18,6 @@ import java.util.UUID;
 
 public class DataContext {
 
-
     private final AccessoryRepository accessoryRepository;
     private final BouquetFlowerRepository bouquetFlowerRepository;
     private final FloristRepository floristRepository;
@@ -31,7 +30,7 @@ public class DataContext {
     private final Set<Entity> dirtyEntities = new LinkedHashSet<>();
     private final Map<Repository<? extends Entity>, Set<UUID>> deletedIdsMap = new HashMap<>();
 
-    private DataContext() {
+    public DataContext() {
         this.accessoryRepository = new JsonAccessoryRepository();
         this.bouquetFlowerRepository = new JsonBouquetFlowerRepository();
         this.floristRepository = new JsonFloristRepository();

@@ -2,36 +2,33 @@ package fedelesh.flowersalon.domain.dto;
 
 import fedelesh.flowersalon.domain.BaseEntity;
 import fedelesh.flowersalon.domain.enums.WorkerRole;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 public final class FloristAddDto extends BaseEntity {
 
     private final String firstName;
     private final String lastName;
-    private final String phoneNumber;
+    private final String email;
     private final String password;
     private final WorkerRole role;
 
-    public FloristAddDto(UUID id, String firstName, String lastName,
-          String phoneNumber, String password, WorkerRole role) {
-        super(); // BaseEntity згенерує ID
+    public FloristAddDto(String firstName, String lastName,
+          String email, String password, WorkerRole role) {
+        super();
         this.firstName = firstName;
         this.lastName = lastName;
-        this.phoneNumber = validatedPhone(phoneNumber);
+        this.email = validatedEmail(email);
         this.password = validatedPassword(password);
         this.role = role;
 
         ensureNoErrors();
     }
 
-    private String validatedPhone(String phone) {
-        if (phone == null || phone.isBlank()) {
-            addError("phoneNumber", "Номер телефону обов'язковий");
-        } else if (!phone.matches("\\+380\\d{9}")) {
-            addError("phoneNumber", "Формат телефону має бути +380XXXXXXXXX");
+    private String validatedEmail(String email) {
+        if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            addError("email", "Невірний формат email");
         }
-        return phone;
+        return email;
     }
 
     private String validatedPassword(String rawPassword) {
@@ -63,8 +60,8 @@ public final class FloristAddDto extends BaseEntity {
         return lastName;
     }
 
-    public String phoneNumber() {
-        return phoneNumber;
+    public String email() {
+        return email;
     }
 
     public String password() {

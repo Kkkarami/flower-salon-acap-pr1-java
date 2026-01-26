@@ -4,7 +4,7 @@ import fedelesh.flowersalon.domain.impl.Florist;
 
 public interface AuthService {
 
-    boolean authenticate(String phoneNumber, String password);
+    boolean authenticate(String email, String password);
 
     boolean isAuthenticated();
 
