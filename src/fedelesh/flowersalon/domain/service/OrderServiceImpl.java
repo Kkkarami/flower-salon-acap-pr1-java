@@ -22,6 +22,18 @@ public final class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public void updateStatus(UUID orderId, OrderStatus newStatus) {
+        Order order = context.orders().findById(orderId)
+              .orElseThrow(() -> new IllegalArgumentException("Замовлення не знайдено"));
+
+        order.setStatus(newStatus);
+
+        // Позначаємо об'єкт як змінений та зберігаємо
+        context.registerDirty(order);
+        context.commit();
+    }
+
+    @Override
     public Order create(OrderCreateDto dto) {
         Order order = new Order(LocalDateTime.now(), 0, dto.workerId(), OrderStatus.NEW);
         context.registerNew(order);
@@ -45,10 +57,23 @@ public final class OrderServiceImpl implements OrderService {
             } else {
                 var bouquetOpt = context.bouquets().findById(itemId);
                 if (bouquetOpt.isPresent()) {
+                    var bouquet = bouquetOpt.get();
                     price = bouquetOpt.get().getPrice();
+                    context.registerDeleted(bouquet);
                 } else {
-                    throw new IllegalArgumentException(
-                          "Товар з ID " + itemId + " не знайдено ні в квітах, ні в букетах");
+                    var accessoryOpt = context.accessories().findById(itemId);
+                    if (accessoryOpt.isPresent()) {
+                        var accessory = accessoryOpt.get();
+                        if (!accessory.isAvailable()) {
+                            throw new IllegalStateException(
+                                  "Аксесуар недоступний: " + accessory.getName());
+                        }
+                        price = accessory.getPrice();
+                    } else {
+                        throw new IllegalArgumentException(
+                              "Товар з ID " + itemId
+                                    + " не знайдено ні в квітах, ні в букетах, ні в аксесуарах");
+                    }
                 }
             }
 

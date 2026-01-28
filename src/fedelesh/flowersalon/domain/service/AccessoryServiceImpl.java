@@ -6,6 +6,7 @@ import fedelesh.flowersalon.domain.dto.AccessoryAddDto;
 import fedelesh.flowersalon.domain.enums.WorkerRole;
 import fedelesh.flowersalon.domain.impl.Accessory;
 import fedelesh.flowersalon.infrastructure.storage.impl.DataContext;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;
@@ -31,6 +32,23 @@ public final class AccessoryServiceImpl implements AccessoryService {
         context.registerNew(accessory);
         context.commit();
         return accessory;
+    }
+
+    @Override
+    public void toggleAvailability(UUID id) {
+        Accessory accessory = context.accessories().findById(id)
+              .orElseThrow(() -> new IllegalArgumentException("Аксесуар не знайдено"));
+
+        accessory.setAvailable(!accessory.isAvailable());
+        context.registerDirty(accessory);
+        context.commit();
+    }
+
+    @Override
+    public List<Accessory> getAvailable() {
+        return context.accessories().findAll(null).stream()
+              .filter(Accessory::isAvailable)
+              .collect(Collectors.toList());
     }
 
     @Override

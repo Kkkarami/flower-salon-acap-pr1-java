@@ -26,7 +26,12 @@ public final class BouquetServiceImpl implements BouquetService {
 
         if (dto.wrapperId() != null) {
             Accessory wrapper = context.accessories().findById(dto.wrapperId())
-                  .orElseThrow(() -> new IllegalArgumentException("Упаковку не знайдено"));
+                  .orElseThrow(() -> new IllegalArgumentException("Аксесуари не знайдено"));
+
+            if (!wrapper.isAvailable()) {
+                throw new IllegalStateException(
+                      "Цей аксесуар (" + wrapper.getName() + ") недоступний!");
+            }
             totalPrice += wrapper.getPrice();
         }
 

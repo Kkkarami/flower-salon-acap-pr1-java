@@ -2,10 +2,10 @@ package fedelesh.flowersalon.domain.service;
 
 import fedelesh.flowersalon.domain.contract.AuthService;
 import fedelesh.flowersalon.domain.contract.SupplyService;
-import fedelesh.flowersalon.domain.dto.SupplyDto;
 import fedelesh.flowersalon.domain.enums.WorkerRole;
 import fedelesh.flowersalon.domain.impl.Flower;
 import fedelesh.flowersalon.infrastructure.storage.impl.DataContext;
+import java.util.UUID;
 
 public final class SupplyServiceImpl implements SupplyService {
 
@@ -18,17 +18,33 @@ public final class SupplyServiceImpl implements SupplyService {
     }
 
     @Override
-    public void processSupply(SupplyDto dto) {
+    public void processSupply(String name, String desc, double price, int qty, UUID supplierId) {
         if (authService.getUser().getRole() != WorkerRole.OWNER) {
             throw new SecurityException("Тільки власник може приймати поставки");
         }
 
-        Flower flower = context.flowers().findById(dto.flowerId())
-              .orElseThrow(() -> new IllegalArgumentException("Товар не знайдено"));
+        // Шукаємо, чи є вже така квітка
+        Flower flower = context.flowers().findAll(null).stream()
+              .filter(f -> f.getName().equalsIgnoreCase(name))
+              .findFirst()
+              .orElse(null);
 
-        flower.setQuantity(flower.getQuantity() + dto.quantity());
+        if (flower != null) {
+            // Якщо є — оновлюємо кількість
+            flower.setQuantity(flower.getQuantity() + qty);
+            context.registerDirty(flower);
+        } else {
+            // Якщо немає — створюємо нову
+            Flower newFlower = new Flower(name, desc, price, qty > 0, qty, supplierId);
+            context.flowers().save(newFlower);
+        }
 
-        context.registerDirty(flower);
         context.commit();
+    }
+
+    private void checkOwnerRights() {
+        if (authService.getUser().getRole() != WorkerRole.OWNER) {
+            throw new SecurityException("Тільки власник може здійснювати ці операції");
+        }
     }
 }

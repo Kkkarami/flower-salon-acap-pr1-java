@@ -28,6 +28,9 @@ public class SignUpServiceImpl implements SignUpService {
 
     @Override
     public String sendVerificationCode(String email) {
+        if (context.florists().findByEmail(email).isPresent()) {
+            throw new RuntimeException("Користувач з поштою " + email + " вже зареєстрований.");
+        }
         String code = String.valueOf((int) (Math.random() * 900000 + 100000));
         sendEmail(email, code);
         this.codeCreationTime = LocalDateTime.now();
@@ -47,6 +50,9 @@ public class SignUpServiceImpl implements SignUpService {
             throw new RuntimeException("Невірний код підтвердження.");
         }
 
+        if (context.florists().findByEmail(dto.email()).isPresent()) {
+            throw new RuntimeException("Помилка: цей Email вже зайнятий.");
+        }
         String hashedPassword = BCrypt.hashpw(dto.password(), BCrypt.gensalt());
 
         Florist florist = new Florist(

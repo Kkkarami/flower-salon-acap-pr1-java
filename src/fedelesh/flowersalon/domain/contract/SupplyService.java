@@ -1,8 +1,8 @@
 package fedelesh.flowersalon.domain.contract;
 
-import fedelesh.flowersalon.domain.dto.SupplyDto;
+import java.util.UUID;
 
 public interface SupplyService {
 
-    void processSupply(SupplyDto dto);
+    void processSupply(String name, String desc, double price, int qty, UUID supplierId);
 }

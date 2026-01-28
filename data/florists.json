@@ -1,0 +1,11 @@
+[
+  {
+    "email": "karaminpc@gmail.com",
+    "firstName": "Adm",
+    "lastName": "Own",
+    "passwordHash": "$2a$10$xa2NhMMsgv0EwfTjOMkQUu2karWcaAprIZixMbHUvSokwM0Br0jYm",
+    "role": "OWNER",
+    "id": "d2d9673e-7f84-4f72-a571-1898d1531d31",
+    "errors": {}
+  }
+]
