@@ -6,7 +6,6 @@ import fedelesh.flowersalon.domain.impl.Florist;
 public final class FloristSpecifications {
 
     private FloristSpecifications() {
-        // Утилітний клас
     }
 
     /**
