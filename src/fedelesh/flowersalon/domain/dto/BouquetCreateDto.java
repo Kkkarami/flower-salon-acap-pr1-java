@@ -15,7 +15,7 @@ public final class BouquetCreateDto extends BaseEntity {
         super();
         this.name = validatedName(name);
         this.flowerIdsWithQuantities = validatedFlowers(flowerIdsWithQuantities);
-        this.wrapperId = wrapperId; // Упаковка може бути null, якщо букет без неї
+        this.wrapperId = wrapperId;
 
         ensureNoErrors();
     }

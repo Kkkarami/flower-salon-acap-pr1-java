@@ -7,7 +7,6 @@ import fedelesh.flowersalon.infrastructure.storage.JsonRepository;
 import fedelesh.flowersalon.infrastructure.storage.contract.SupplierRepository;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Optional;
 
 class JsonSupplierRepository extends JsonRepository<Supplier> implements SupplierRepository {
 
@@ -16,12 +15,5 @@ class JsonSupplierRepository extends JsonRepository<Supplier> implements Supplie
 
     public JsonSupplierRepository() {
         super(JsonFilePath.SUPPLIERS.getPath(), LIST_TYPE);
-    }
-
-    @Override
-    public Optional<Supplier> findByCompanyName(String companyName) {
-        return findAllInternal().stream()
-              .filter(s -> s.getCompanyName().equalsIgnoreCase(companyName))
-              .findFirst();
     }
 }

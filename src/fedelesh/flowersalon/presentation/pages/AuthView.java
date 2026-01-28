@@ -1,6 +1,7 @@
 package fedelesh.flowersalon.presentation.pages;
 
 import fedelesh.flowersalon.domain.contract.AuthService;
+import fedelesh.flowersalon.domain.dto.LoginDto;
 import java.util.Scanner;
 
 public class AuthView {
@@ -22,12 +23,18 @@ public class AuthView {
             System.out.print("Пароль: ");
             String password = scanner.nextLine();
 
-            if (authService.authenticate(email, password)) {
-                System.out.println("\nВітаємо, " + authService.getUser().getFirstName() + "!");
-                return true;
-            } else {
-                System.out.println(
-                      "\n[!] Помилка: неправильний Email або пароль. Спробуйте ще раз.");
+            try {
+                LoginDto dto = new LoginDto(email, password);
+
+                // Виконуємо аутентифікацію
+                if (authService.authenticate(dto)) {
+                    System.out.println("\nВітаємо, " + authService.getUser().getFirstName() + "!");
+                    return true;
+                } else {
+                    System.out.println("Помилка: Неправильний Email або пароль.");
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println("Помилка: Неправильний Email або пароль.");
             }
         }
     }

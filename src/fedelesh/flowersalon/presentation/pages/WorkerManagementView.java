@@ -44,7 +44,7 @@ public class WorkerManagementView {
 
     private void showAllWorkers() {
         var workers = floristService.getAll();
-        System.out.printf("%-20s | %-15s | %-10s%n", "Email", "Ім'я", "Роль");
+        System.out.printf("%-35s | %-15s | %-10s%n", "Email", "Ім'я", "Роль");
         workers.forEach(w -> System.out.printf("%-20s | %-15s | %-10s%n",
               w.getEmail(), w.getFirstName(), w.getRole()));
     }

@@ -1,12 +1,11 @@
 package fedelesh.flowersalon.domain.contract;
 
+import fedelesh.flowersalon.domain.dto.LoginDto;
 import fedelesh.flowersalon.domain.impl.Florist;
 
 public interface AuthService {
 
-    boolean authenticate(String email, String password);
-
-    boolean isAuthenticated();
+    boolean authenticate(LoginDto dto);
 
     Florist getUser();
 

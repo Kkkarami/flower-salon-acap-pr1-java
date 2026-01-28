@@ -14,7 +14,6 @@ public class Flower extends BaseEntity {
     private String name;
     private String description;
     private double price;
-    private boolean available;
     private int quantity;
     private UUID supplierId;
 
@@ -22,15 +21,12 @@ public class Flower extends BaseEntity {
         super();
     }
 
-    public Flower(String name, String description, double price, boolean available,
-          int quantity,
+    public Flower(String name, String description, double price, int quantity,
           UUID supplierId) {
         this();
         setName(name);
         setDescription(description);
         setPrice(price);
-        setQuantity(quantity);
-        setAvailable(available);
         this.supplierId = supplierId;
 
         if (!isValid()) {
@@ -70,14 +66,6 @@ public class Flower extends BaseEntity {
         this.description = description;
     }
 
-    public boolean isAvailable() {
-        return available;
-    }
-
-    public void setAvailable(boolean available) {
-        this.available = available;
-    }
-
     public int getQuantity() {
         return quantity;
     }
@@ -90,15 +78,9 @@ public class Flower extends BaseEntity {
         }
 
         this.quantity = quantity;
-        this.available = quantity > 0;
     }
 
     public UUID getSupplierId() {
         return supplierId;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s %.2f %s", name, price, available ? "доступний" : "не доступний");
     }
 }

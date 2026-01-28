@@ -7,7 +7,6 @@ import fedelesh.flowersalon.infrastructure.storage.JsonRepository;
 import fedelesh.flowersalon.infrastructure.storage.contract.OrderRepository;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.UUID;
 
 class JsonOrderRepository extends JsonRepository<Order> implements OrderRepository {
 
@@ -16,12 +15,5 @@ class JsonOrderRepository extends JsonRepository<Order> implements OrderReposito
 
     public JsonOrderRepository() {
         super(JsonFilePath.ORDERS.getPath(), LIST_TYPE);
-    }
-
-    @Override
-    public List<Order> findByWorkerId(UUID workerId) {
-        return findAllInternal().stream()
-              .filter(order -> workerId.equals(order.getWorkerId()))
-              .toList();
     }
 }

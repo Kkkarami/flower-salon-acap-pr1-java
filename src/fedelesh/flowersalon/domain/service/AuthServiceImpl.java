@@ -1,6 +1,7 @@
 package fedelesh.flowersalon.domain.service;
 
 import fedelesh.flowersalon.domain.contract.AuthService;
+import fedelesh.flowersalon.domain.dto.LoginDto;
 import fedelesh.flowersalon.domain.impl.Florist;
 import fedelesh.flowersalon.infrastructure.storage.impl.DataContext;
 import org.mindrot.bcrypt.BCrypt;
@@ -15,23 +16,19 @@ public final class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public boolean authenticate(String email, String password) {
+    public boolean authenticate(LoginDto dto) {
         return context.florists().findAll(null).stream()
-              .filter(f -> f.getEmail().equalsIgnoreCase(email))
+              .filter(f -> f.getEmail()
+                    .equals(dto.email())) // Використовуємо .equals() як ви просили раніше
               .findFirst()
               .map(f -> {
-                  if (BCrypt.checkpw(password, f.getPasswordHash())) {
+                  if (BCrypt.checkpw(dto.password(), f.getPasswordHash())) {
                       this.currentUser = f;
                       return true;
                   }
                   return false;
               })
               .orElse(false);
-    }
-
-    @Override
-    public boolean isAuthenticated() {
-        return currentUser != null;
     }
 
     @Override
